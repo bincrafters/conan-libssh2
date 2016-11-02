@@ -76,7 +76,10 @@ class libssh2Conan(ConanFile):
         self.copy("*.*", dst="lib/pkgconfig", src="install/lib/pkgconfig")
 
     def package_info(self):
-        self.cpp_info.libs = ["libssh2"]
+        if self.settings.os == "Windows":
+            self.cpp_info.libs = ["libssh2"]
+        else:
+            self.cpp_info.libs = ["ssh2"]
 
         if self.settings.os == "Windows":
             if not self.options.shared:

@@ -66,17 +66,25 @@ class libssh2Conan(ConanFile):
 
         self.run("cmake --build . --target install %s" % cmake.build_config)
 
+    def imports(self):
+        self.copy("*.dll", dst="bin", src="bin")
+        self.copy("*.dylib*", dst="bin", src="lib")
+
     def package(self):
         self.copy("*.h", dst="include", src="install/include")
         self.copy("*.dll", dst="bin", src="install/bin")
         self.copy("*.lib", dst="lib", src="install/lib")
         self.copy("*.a", dst="lib", src="install/lib")
-        self.copy("*.so", dst="lib", src="install/lib")
+        self.copy("*.so*", dst="lib", src="install/lib")
+        self.copy("*.dylib", dst="lib", src="install/lib")
         self.copy("*.*", dst="lib/cmake/libssh2", src="install/lib/cmake/libssh2")
         self.copy("*.*", dst="lib/pkgconfig", src="install/lib/pkgconfig")
 
     def package_info(self):
-        self.cpp_info.libs = ["libssh2"]
+        if self.settings.os == "Windows":
+            self.cpp_info.libs = ["libssh2"]
+        else:
+            self.cpp_info.libs = ["ssh2"]
 
         if self.settings.os == "Windows":
             if not self.options.shared:

@@ -1,3 +1,6 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/lexeak2ohlyqa4gh?svg=true)](https://ci.appveyor.com/project/Wi3ard/conan-libssh2)
+[![Build Status](https://travis-ci.org/Wi3ard/conan-libssh2.svg?branch=release%2F1.8.0)](https://travis-ci.org/Wi3ard/conan-libssh2)
+
 # conan-libssh2
 
 [Conan.io](https://conan.io) package for [libssh2](https://github.com/libssh2/libssh2) library

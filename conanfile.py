@@ -5,7 +5,7 @@ import shutil
 class libssh2Conan(ConanFile):
     name = "libssh2"
     version = "1.8.0"
-    url="https://github.com/Wi3ard/conan-libssh2"
+    url="https://github.com/eliaskousk/conan-libssh2"
     generators = "cmake", "txt"
     settings = "os", "compiler", "build_type", "arch"
     exports = "cmake/*"
@@ -16,7 +16,7 @@ class libssh2Conan(ConanFile):
                "enable_mac_none": [True, False],
                "crypto_backend": ["none", "OpenSSL"],
                }
-    default_options = "shared=False", \
+    default_options = "shared=True", \
         "enable_zlib=True", \
         "enable_crypt_none=False", \
         "enable_mac_none=False", \

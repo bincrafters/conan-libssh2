@@ -1,10 +1,10 @@
 from conans import ConanFile, CMake
 import os
 
+username = os.getenv("CONAN_USERNAME", "eliaskousk")
 channel = os.getenv("CONAN_CHANNEL", "stable")
-username = os.getenv("CONAN_USERNAME", "Wi3ard")
 
-class AsmjitReuseConan(ConanFile):
+class DefaultNameConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     requires = "libssh2/1.8.0@%s/%s" % (username, channel)
     generators = "cmake"
@@ -19,4 +19,4 @@ class AsmjitReuseConan(ConanFile):
         self.run("cmake --build . %s" % cmake.build_config)
 
     def test(self):
-        self.run("cd bin && .%stestproj" % os.sep)
+        self.run("cd bin && .%smytest" % os.sep)

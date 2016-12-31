@@ -1,11 +1,10 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/lexeak2ohlyqa4gh?svg=true)](https://ci.appveyor.com/project/Wi3ard/conan-libssh2)
-[![Build Status](https://travis-ci.org/Wi3ard/conan-libssh2.svg?branch=release%2F1.8.0)](https://travis-ci.org/Wi3ard/conan-libssh2)
+[![Build Status](https://travis-ci.org/eliaskousk/conan-libssh2.svg?branch=release%2F1.8.0)](https://travis-ci.org/eliaskousk/conan-libssh2)
 
 # conan-libssh2
 
 [Conan.io](https://conan.io) package for [libssh2](https://github.com/libssh2/libssh2) library
 
-The packages generated with this **conanfile** can be found in [conan.io](https://www.conan.io/source/libssh2/1.8.0/Wi3ard/stable).
+The packages generated with this **conanfile** can be found in [conan.io](https://www.conan.io/source/libssh2/1.8.0/eliaskousk/stable).
 
 ## Build packages
 
@@ -15,20 +14,20 @@ Download conan client from [Conan.io](https://conan.io) and run:
 
 ## Upload packages to server
 
-    $ conan upload libssh2/1.8.0@Wi3ard/stable --all
+    $ conan upload libssh2/1.8.0@eliaskousk/stable --all
 
 ## Reuse the packages
 
 ### Basic setup
 
-    $ conan install libssh2/1.8.0@Wi3ard/stable
+    $ conan install libssh2/1.8.0@eliaskousk/stable
     
 ### Project setup
 
 If you handle multiple dependencies in your project is better to add a *conanfile.txt*
     
     [requires]
-    libssh2/1.8.0@Wi3ard/stable
+    libssh2/1.8.0@eliaskousk/stable
 
     [options]
     libssh2:shared=True # False

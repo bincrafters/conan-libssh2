@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/eliaskousk/conan-libssh2.svg?branch=release%2F1.8.0)](https://travis-ci.org/eliaskousk/conan-libssh2)
+[![Build Status](https://travis-ci.org/eliaskousk/conan-libssh2.svg?branch=release/1.8.0)](https://travis-ci.org/eliaskousk/conan-libssh2)
 
 # conan-libssh2
 

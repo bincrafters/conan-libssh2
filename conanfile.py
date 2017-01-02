@@ -36,7 +36,7 @@ class libssh2Conan(ConanFile):
         if self.options.enable_zlib:
             self.requires.add("zlib/1.2.8@lasote/stable", private=False)
         if self.options.crypto_backend == "OpenSSL":
-            self.requires.add("OpenSSL/1.0.2i@lasote/stable", private=False)
+            self.requires.add("OpenSSL/1.0.2j@eliaskousk/stable", private=False)
 
     def build(self):
         cmake = CMake(self.settings)

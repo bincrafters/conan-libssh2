@@ -11,12 +11,14 @@ class libssh2Conan(ConanFile):
     exports = "cmake/*"
     short_paths = True
     options = {"shared": [True, False],
+               "fpic": [True, False],
                "enable_zlib": [True, False],
                "enable_crypt_none": [True, False],
                "enable_mac_none": [True, False],
                "crypto_backend": ["none", "OpenSSL"],
                }
     default_options = "shared=False", \
+        "fpic=True", \
         "enable_zlib=True", \
         "enable_crypt_none=False", \
         "enable_mac_none=False", \
@@ -45,6 +47,8 @@ class libssh2Conan(ConanFile):
             the_option = "%s=" % option_name.upper()
             if option_name == "shared":
                the_option = "BUILD_SHARED_LIBS=ON" if activated else "BUILD_SHARED_LIBS=OFF"
+            elif option_name == "fpic":
+               the_option = "CMAKE_POSITION_INDEPENDENT_CODE=TRUE" if activated else "CMAKE_POSITION_INDEPENDENT_CODE=FALSE"
             elif option_name == "enable_zlib":
                the_option = "ENABLE_ZLIB_COMPRESSION=ON" if activated else "ENABLE_ZLIB_COMPRESSION=OFF"
             elif option_name == "enable_crypt_none":

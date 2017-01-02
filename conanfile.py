@@ -16,7 +16,7 @@ class libssh2Conan(ConanFile):
                "enable_mac_none": [True, False],
                "crypto_backend": ["none", "OpenSSL"],
                }
-    default_options = "shared=True", \
+    default_options = "shared=False", \
         "enable_zlib=True", \
         "enable_crypt_none=False", \
         "enable_mac_none=False", \

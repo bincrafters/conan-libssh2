@@ -32,6 +32,9 @@ class libssh2Conan(ConanFile):
         os.unlink("libssh2/CMakeLists.txt")
         shutil.move("cmake/CMakeLists.txt", "libssh2")
 
+    def config_options(self):
+        del self.settings.compiler.libcxx
+
     def config(self):
         if self.options.enable_zlib:
             self.requires.add("zlib/1.2.8@lasote/stable", private=False)

@@ -1,4 +1,5 @@
-from conans import ConanFile, CMake
+from conans import ConanFile, CMake, tools
+from conans.tools import cpu_count
 import os
 import shutil
 
@@ -37,9 +38,11 @@ class libssh2Conan(ConanFile):
 
     def config(self):
         if self.options.enable_zlib:
-            self.requires.add("zlib/1.2.8@lasote/stable", private=False)
+            self.requires.add("zlib/1.2.9@lasote/stable", private=False)
+            self.options["zlib"].shared = self.options.shared
         if self.options.crypto_backend == "OpenSSL":
             self.requires.add("OpenSSL/1.0.2j@eliaskousk/stable", private=False)
+            self.options["OpenSSL"].shared = self.options.shared
 
     def build(self):
         cmake = CMake(self.settings)
@@ -71,7 +74,7 @@ class libssh2Conan(ConanFile):
         self.output.warn(cmake_conf_command)
         self.run(cmake_conf_command)
 
-        self.run("cmake --build . --target install %s" % cmake.build_config)
+        self.run("cmake --build . --target install %s -- -j%s" % (cmake.build_config, cpu_count()))
 
     def imports(self):
         self.copy("*.dll", dst="bin", src="bin")

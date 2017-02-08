@@ -1,5 +1,5 @@
 from conans import ConanFile, CMake, tools
-from conans.tools import cpu_count
+from conans.tools import download, untargz, check_sha1, cpu_count
 import os
 import shutil
 
@@ -8,6 +8,7 @@ class libssh2Conan(ConanFile):
     version = "1.8.0"
     url="https://github.com/theirix/conan-libssh2"
     generators = "cmake", "txt"
+    FOLDER_NAME = 'libssh2-%s' % version
     settings = "os", "compiler", "build_type", "arch"
     exports = "cmake/*"
     short_paths = True
@@ -26,12 +27,16 @@ class libssh2Conan(ConanFile):
         "crypto_backend=OpenSSL"
 
     def source(self):
-        self.run("git clone https://github.com/libssh2/libssh2.git")
-        self.run("cd libssh2 && git checkout tags/libssh2-1.8.0")
+        tarball_name = "libssh2-%s.tar.gz" % self.version
+        download("https://www.libssh2.org/download/%s"
+                 % (tarball_name), tarball_name)
+        check_sha1(tarball_name, "baf2d1fb338eee531ba9b6b121c64235e089e0f5")
+        untargz(tarball_name)
+        os.unlink(tarball_name)
 
         self.output.info("Copying CMakeLists.txt")
-        os.unlink("libssh2/CMakeLists.txt")
-        shutil.move("cmake/CMakeLists.txt", "libssh2")
+        os.unlink("%s/CMakeLists.txt" % self.FOLDER_NAME)
+        shutil.move("cmake/CMakeLists.txt", self.FOLDER_NAME)
 
     def config_options(self):
         del self.settings.compiler.libcxx
@@ -70,7 +75,7 @@ class libssh2Conan(ConanFile):
 
         cmake_cmd_options = " -D".join(cmake_options)
 
-        cmake_conf_command = 'cmake %s/libssh2 %s -DCMAKE_INSTALL_PREFIX:PATH=install -D%s' % (self.conanfile_directory, cmake.command_line, cmake_cmd_options)
+        cmake_conf_command = 'cmake %s/%s %s -DCMAKE_INSTALL_PREFIX:PATH=install -D%s' % (self.conanfile_directory, self.FOLDER_NAME, cmake.command_line, cmake_cmd_options)
         self.output.warn(cmake_conf_command)
         self.run(cmake_conf_command)
 

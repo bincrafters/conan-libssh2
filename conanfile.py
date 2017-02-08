@@ -10,6 +10,8 @@ class libssh2Conan(ConanFile):
     generators = "cmake", "txt"
     FOLDER_NAME = 'libssh2-%s' % version
     settings = "os", "compiler", "build_type", "arch"
+    license = "BSD-3"
+    decsription = "libssh2 is a client-side C library implementing the SSH2 protocol"
     exports = "cmake/*"
     short_paths = True
     options = {"shared": [True, False],
@@ -43,10 +45,10 @@ class libssh2Conan(ConanFile):
 
     def config(self):
         if self.options.enable_zlib:
-            self.requires.add("zlib/[>=1.2.8,<1.3.0]@lasote/stable", private=False)
+            self.requires.add("zlib/[~=1.2]@lasote/stable", private=False)
             self.options["zlib"].shared = self.options.shared
         if self.options.crypto_backend == "OpenSSL":
-            self.requires.add("OpenSSL/[>=1.0.2a,<1.0.3]@lasote/stable", private=False)
+            self.requires.add("OpenSSL/[>1.0.2a,<1.0.3]@lasote/stable", private=False)
             self.options["OpenSSL"].shared = self.options.shared
 
     def build(self):

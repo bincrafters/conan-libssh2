@@ -6,7 +6,7 @@ import shutil
 class libssh2Conan(ConanFile):
     name = "libssh2"
     version = "1.8.0"
-    url="https://github.com/eliaskousk/conan-libssh2"
+    url="https://github.com/theirix/conan-libssh2"
     generators = "cmake", "txt"
     settings = "os", "compiler", "build_type", "arch"
     exports = "cmake/*"

@@ -7,7 +7,7 @@ env:
   global:
     - CONAN_UPLOAD=1
     - CONAN_REFERENCE="libssh2/1.8.0"
-    - CONAN_USERNAME="eliaskousk"
+    - CONAN_USERNAME="theirix"
     - CONAN_CHANNEL="stable"
     - CONAN_TOTAL_PAGES=1
     - CONAN_CURRENT_PAGE=1

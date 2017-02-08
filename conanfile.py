@@ -38,10 +38,10 @@ class libssh2Conan(ConanFile):
 
     def config(self):
         if self.options.enable_zlib:
-            self.requires.add("zlib/1.2.9@lasote/stable", private=False)
+            self.requires.add("zlib/1.2.8@lasote/stable", private=False)
             self.options["zlib"].shared = self.options.shared
         if self.options.crypto_backend == "OpenSSL":
-            self.requires.add("OpenSSL/1.0.2j@eliaskousk/stable", private=False)
+            self.requires.add("OpenSSL/1.0.2j@lasote/stable", private=False)
             self.options["OpenSSL"].shared = self.options.shared
 
     def build(self):

@@ -43,7 +43,7 @@ class libssh2Conan(ConanFile):
     def config_options(self):
         del self.settings.compiler.libcxx
 
-    def config(self):
+    def requirements(self):
         if self.options.enable_zlib:
             self.requires.add("zlib/[~=1.2]@lasote/stable", private=False)
             self.options["zlib"].shared = self.options.shared

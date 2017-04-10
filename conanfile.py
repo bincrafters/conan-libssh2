@@ -11,7 +11,7 @@ class libssh2Conan(ConanFile):
     FOLDER_NAME = 'libssh2-%s' % version
     settings = "os", "compiler", "build_type", "arch"
     license = "BSD-3"
-    decsription = "libssh2 is a client-side C library implementing the SSH2 protocol"
+    description = "libssh2 is a client-side C library implementing the SSH2 protocol"
     exports = "cmake/*"
     short_paths = True
     options = {"shared": [True, False],

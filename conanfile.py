@@ -76,3 +76,6 @@ class Libssh2Conan(ConanFile):
         if self.settings.os == "Windows":
             if not self.options.shared:
                 self.cpp_info.libs.append('ws2_32')
+        elif self.settings.os == "Linux":
+            if self.options.shared:
+                self.cpp_info.libs.append('dl')

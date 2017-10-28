@@ -1,109 +1,76 @@
-from conans import ConanFile, CMake, tools
-from conans.tools import download, untargz, check_sha1, cpu_count
-import os
+from conans import ConanFile, CMake, os, tools
 import shutil
 
-class libssh2Conan(ConanFile):
+class Libssh2Conan(ConanFile):
     name = "libssh2"
     version = "1.8.0"
-    url="https://github.com/theirix/conan-libssh2"
-    generators = "cmake", "txt"
-    FOLDER_NAME = 'libssh2-%s' % version
-    settings = "os", "compiler", "build_type", "arch"
-    license = "BSD-3"
-    description = "libssh2 is a client-side C library implementing the SSH2 protocol"
-    exports = "cmake/*"
-    short_paths = True
+    settings = "os", "arch", "compiler", "build_type"
     options = {"shared": [True, False],
-               "fpic": [True, False],
-               "enable_zlib": [True, False],
+               "with_pic": [True, False],
+               "with_zlib": [True, False],
                "enable_crypt_none": [True, False],
                "enable_mac_none": [True, False],
-               "crypto_backend": ["none", "OpenSSL"],
+               "with_openssl": [True, False]
                }
     default_options = "shared=False", \
-        "fpic=True", \
-        "enable_zlib=True", \
+        "with_pic=True", \
+        "with_zlib=True", \
         "enable_crypt_none=False", \
         "enable_mac_none=False", \
-        "crypto_backend=OpenSSL"
+        "with_openssl=True"
+    url = "https://github.com/bincrafters/conan-libssh2"
+    description = "libssh2 is a client-side C library implementing the SSH2 protocol"
+    license = "https://github.com/libssh2/libssh2/blob/master/COPYING"
+    exports = "CMakeLists.txt"
+    generators = "cmake", "txt"
 
     def source(self):
-        tarball_name = "libssh2-%s.tar.gz" % self.version
-        download("https://www.libssh2.org/download/%s"
-                 % (tarball_name), tarball_name)
-        check_sha1(tarball_name, "baf2d1fb338eee531ba9b6b121c64235e089e0f5")
-        untargz(tarball_name)
-        os.unlink(tarball_name)
-
-        self.output.info("Copying CMakeLists.txt")
-        os.unlink("%s/CMakeLists.txt" % self.FOLDER_NAME)
-        shutil.move("cmake/CMakeLists.txt", self.FOLDER_NAME)
-
-    def config_options(self):
-        del self.settings.compiler.libcxx
+        tools.get("https://www.libssh2.org/download/libssh2-%s.tar.gz" % (self.version))
+        os.rename("libssh2-%s" % (self.version), self.name)
+ 
+        cmakefile = os.path.join(self.name, "CMakeLists.txt")
+        shutil.move(cmakefile, os.path.join(self.name, "CMakeListsOriginal.cmake"))
+        shutil.move("CMakeLists.txt", cmakefile)
 
     def requirements(self):
-        if self.options.enable_zlib:
-            self.requires.add("zlib/[~=1.2]@lasote/stable", private=False)
+        if self.options.with_zlib:
+            self.requires.add("zlib/[~=1.2]@conan/stable", private=False)
             self.options["zlib"].shared = self.options.shared
-        if self.options.crypto_backend == "OpenSSL":
-            self.requires.add("OpenSSL/[>1.0.2a,<1.0.3]@lasote/stable", private=False)
+        if self.options.with_openssl:
+            self.requires.add("OpenSSL/[>1.0.2a,<1.0.3]@conan/stable", private=False)
             self.options["OpenSSL"].shared = self.options.shared
 
     def build(self):
-        cmake = CMake(self.settings)
+        cmake = CMake(self)
 
-        cmake_options = []
-        for option_name in self.options.values.fields:
-            activated = getattr(self.options, option_name)
-            the_option = "%s=" % option_name.upper()
-            if option_name == "shared":
-               the_option = "BUILD_SHARED_LIBS=ON" if activated else "BUILD_SHARED_LIBS=OFF"
-            elif option_name == "fpic":
-               the_option = "CMAKE_POSITION_INDEPENDENT_CODE=TRUE" if activated else "CMAKE_POSITION_INDEPENDENT_CODE=FALSE"
-            elif option_name == "enable_zlib":
-               the_option = "ENABLE_ZLIB_COMPRESSION=ON" if activated else "ENABLE_ZLIB_COMPRESSION=OFF"
-            elif option_name == "enable_crypt_none":
-               the_option = "ENABLE_CRYPT_NONE=ON" if activated else "ENABLE_CRYPT_NONE=OFF"
-            elif option_name == "enable_mac_none":
-               the_option = "ENABLE_MAC_NONE=ON" if activated else "ENABLE_MAC_NONE=OFF"
-            elif option_name == "crypto_backend":
-                if activated == "OpenSSL":
-                    the_option = "CRYPTO_BACKEND=OpenSSL" if activated else "CRYPTO_BACKEND="
-            else:
-               the_option += "ON" if activated else "OFF"
-            cmake_options.append(the_option)
+        defs = dict()
+        defs['BUILD_SHARED_LIBS'] = self.options.shared
+        defs['CMAKE_POSITION_INDEPENDENT_CODE'] = self.options.with_pic
+        defs['ENABLE_ZLIB_COMPRESSION'] = self.options.with_zlib
+        defs['ENABLE_CRYPT_NONE'] = self.options.enable_crypt_none
+        defs['ENABLE_MAC_NONE'] = self.options.enable_mac_none
+        if self.options.with_openssl:
+            defs['CRYPTO_BACKEND'] = 'OpenSSL'
+        else:
+            raise Exception("Crypto backend must be specified")
+        defs['CMAKE_INSTALL_PREFIX'] = 'install'
 
-        cmake_cmd_options = " -D".join(cmake_options)
-
-        cmake_conf_command = 'cmake %s/%s %s -DCMAKE_INSTALL_PREFIX:PATH=install -D%s' % (self.conanfile_directory, self.FOLDER_NAME, cmake.command_line, cmake_cmd_options)
-        self.output.warn(cmake_conf_command)
-        self.run(cmake_conf_command)
-
-        self.run("cmake --build . --target install %s -- -j%s" % (cmake.build_config, cpu_count()))
-
-    def imports(self):
-        self.copy("*.dll", dst="bin", src="bin")
-        self.copy("*.dylib*", dst="bin", src="lib")
+        cmake.configure(source_dir=self.name, build_dir="./", defs=defs)
+        cmake.build()
+        cmake.install()
 
     def package(self):
-        self.copy("*.h", dst="include", src="install/include")
-        self.copy("*.dll", dst="bin", src="install/bin")
-        self.copy("*.lib", dst="lib", src="install/lib")
-        self.copy("*.a", dst="lib", src="install/lib")
-        self.copy("*.a", dst="lib", src="install/lib64")
-        self.copy("*.so*", dst="lib", src="install/lib")
-        self.copy("*.so*", dst="lib", src="install/lib64")
-        self.copy("*.dylib", dst="lib", src="install/lib")
+        self.copy(pattern="*", dst="include", src="install/include")
+        self.copy(pattern="*.dll", dst="bin", src="install/bin", keep_path=False)
+        self.copy(pattern="*.lib", dst="lib", src="install/lib", keep_path=False)
+        self.copy(pattern="*.a", dst="lib", src="install/lib", keep_path=False)
+        self.copy(pattern="*.so*", dst="lib", src="install/lib", keep_path=False)
+        self.copy(pattern="*.dylib", dst="lib", src="install/lib", keep_path=False)
         self.copy("*.*", dst="lib/cmake/libssh2", src="install/lib/cmake/libssh2")
         self.copy("*.*", dst="lib/pkgconfig", src="install/lib/pkgconfig")
 
     def package_info(self):
-        if self.settings.os == "Windows":
-            self.cpp_info.libs = ["libssh2"]
-        else:
-            self.cpp_info.libs = ["ssh2"]
+        self.cpp_info.libs = tools.collect_libs(self)
 
         if self.settings.os == "Windows":
             if not self.options.shared:

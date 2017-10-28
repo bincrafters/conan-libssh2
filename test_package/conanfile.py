@@ -1,22 +1,19 @@
-from conans import ConanFile, CMake
+from conans import ConanFile, CMake, tools, RunEnvironment
 import os
 
-username = os.getenv("CONAN_USERNAME", "theirix")
-channel = os.getenv("CONAN_CHANNEL", "stable")
 
-class DefaultNameConan(ConanFile):
+class TestPackageConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
-    requires = "libssh2/1.8.0@%s/%s" % (username, channel)
     generators = "cmake"
 
-    def imports(self):
-      self.copy("*.dll", dst="bin", src="bin")
-      self.copy("*.dylib*", dst="bin", src="lib")
-
     def build(self):
-        cmake = CMake(self.settings)
-        self.run('cmake "%s" %s' % (self.conanfile_directory, cmake.command_line))
-        self.run("cmake --build . %s" % cmake.build_config)
-
+        cmake = CMake(self)
+        cmake.configure()
+        cmake.build()
+        
     def test(self):
-        self.run("cd bin && .%smytest" % os.sep)
+        with tools.environment_append(RunEnvironment(self).vars):
+            if self.settings.os == "Windows":
+                self.run(os.path.join("bin","test_package"))
+            else:
+                self.run("DYLD_LIBRARY_PATH=%s %s"%(os.environ['DYLD_LIBRARY_PATH'],os.path.join("bin","test_package")))

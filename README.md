@@ -1,10 +1,10 @@
-[ ![Download](https://api.bintray.com/packages/bincrafters/public-conan/libssh2%3Abincrafters/images/download.svg?version=2.9.1%3Atesting) ](https://bintray.com/bincrafters/public-conan/somelib%3Abincrafters/2.9.1%3Atesting/link)
-[![Build Status](https://travis-ci.org/bincrafters/conan-libssh2.svg?branch=testing%2F2.9.1)](https://travis-ci.org/bincrafters/conan-somelib)
-[![Build status](https://ci.appveyor.com/api/projects/status/a5snyovachh6e8nh?svg=true)](https://ci.appveyor.com/project/BinCrafters/conan-libssh2)
+[ ![Download](https://api.bintray.com/packages/bincrafters/public-conan/libssh2%3Abincrafters/images/download.svg?version=1.8.0%3Atesting) ](https://bintray.com/bincrafters/public-conan/libssh2%3Abincrafters/1.8.0%3Atesting/link)
+[![Build Status](https://travis-ci.org/bincrafters/conan-libssh2.svg?branch=testing%2F1.8.0)](https://travis-ci.org/bincrafters/conan-libssh2)
+[![Build status XXX FIXME](https://ci.appveyor.com/api/projects/status/XXX?svg=true)](https://ci.appveyor.com/project/BinCrafters/conan-libssh2)
 
 Brief statement describing libssh2
 
-[Conan.io](https://conan.io) package for [libssh2](https://github.com/someauthor/somelib) project
+[Conan.io](https://conan.io) package for [libssh2](https://libssh2.org) project
 
 The packages generated with this **conanfile** can be found in [Bintray](https://bintray.com/bincrafters/public-conan/libssh2%3Abincrafters).
 

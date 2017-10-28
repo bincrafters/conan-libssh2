@@ -22,16 +22,26 @@ class Libssh2Conan(ConanFile):
     description = "libssh2 is a client-side C library implementing the SSH2 protocol"
     license = "https://github.com/libssh2/libssh2/blob/master/COPYING"
     short_paths = True
-    exports = "CMakeLists.txt"
+    exports = "exports/*"
     generators = "cmake", "txt"
 
     def source(self):
         tools.get("https://www.libssh2.org/download/libssh2-%s.tar.gz" % (self.version))
         os.rename("libssh2-%s" % (self.version), self.name)
- 
+
         cmakefile = os.path.join(self.name, "CMakeLists.txt")
         shutil.move(cmakefile, os.path.join(self.name, "CMakeListsOriginal.cmake"))
-        shutil.move("CMakeLists.txt", cmakefile)
+        shutil.move("exports/CMakeLists.txt", cmakefile)
+
+        if self.settings.os == "Linux":
+            # Workaround for dl not found by FindOpenSSL for static openssl
+            #
+            # Although conan-openssl provides 'dl' in the cpp_info,
+            # cmake's FindOpenSSL and libssh do not add dl to the OPENSSL_LIBRARIES
+            # so linking examples and detecting features does not work.
+            #
+            # Moreover dl must be added to the end of library list
+            self.run("patch -d libssh2 -p0 < exports/dl.patch")
 
     def requirements(self):
         if self.options.with_zlib:
@@ -55,6 +65,8 @@ class Libssh2Conan(ConanFile):
         else:
             raise Exception("Crypto backend must be specified")
         defs['CMAKE_INSTALL_PREFIX'] = 'install'
+        if self.options.with_openssl:
+            defs['OPENSSL_ADDITIONAL_LIBRARIES'] = 'dl'
 
         cmake.configure(source_dir=self.name, build_dir="./", defs=defs)
         cmake.build()
@@ -71,7 +83,7 @@ class Libssh2Conan(ConanFile):
         self.copy("*.*", dst="lib/pkgconfig", src="install/lib/pkgconfig")
 
     def package_info(self):
-        self.cpp_info.libs = tools.collect_libs(self)
+        self.cpp_info.libs = self.collect_libs()
 
         if self.settings.os == "Windows":
             if not self.options.shared:

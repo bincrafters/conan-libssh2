@@ -1,5 +1,6 @@
-from conans import ConanFile, CMake, os, tools
+from conans import ConanFile, CMake, tools
 import shutil
+import os
 
 class Libssh2Conan(ConanFile):
     name = "libssh2"
@@ -11,7 +12,7 @@ class Libssh2Conan(ConanFile):
                "enable_crypt_none": [True, False],
                "enable_mac_none": [True, False],
                "with_openssl": [True, False]
-               }
+              }
     default_options = "shared=False", \
         "with_pic=True", \
         "with_zlib=True", \

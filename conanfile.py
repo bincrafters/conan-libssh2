@@ -56,19 +56,18 @@ class Libssh2Conan(ConanFile):
     def build(self):
         cmake = CMake(self)
 
-        defs = dict()
-        defs['BUILD_SHARED_LIBS'] = self.options.shared
-        defs['CMAKE_POSITION_INDEPENDENT_CODE'] = self.options.with_pic
-        defs['ENABLE_ZLIB_COMPRESSION'] = self.options.with_zlib
-        defs['ENABLE_CRYPT_NONE'] = self.options.enable_crypt_none
-        defs['ENABLE_MAC_NONE'] = self.options.enable_mac_none
+        cmake.definitions['BUILD_SHARED_LIBS'] = self.options.shared
+        cmake.definitions['CMAKE_POSITION_INDEPENDENT_CODE'] = self.options.with_pic
+        cmake.definitions['ENABLE_ZLIB_COMPRESSION'] = self.options.with_zlib
+        cmake.definitions['ENABLE_CRYPT_NONE'] = self.options.enable_crypt_none
+        cmake.definitions['ENABLE_MAC_NONE'] = self.options.enable_mac_none
         if self.options.with_openssl:
-            defs['CRYPTO_BACKEND'] = 'OpenSSL'
-            defs['OPENSSL_ROOT_DIR'] = self.deps_cpp_info['OpenSSL'].rootpath
-            defs['OPENSSL_ADDITIONAL_LIBRARIES'] = 'dl'
+            cmake.definitions['CRYPTO_BACKEND'] = 'OpenSSL'
+            cmake.definitions['OPENSSL_ROOT_DIR'] = self.deps_cpp_info['OpenSSL'].rootpath
+            cmake.definitions['OPENSSL_ADDITIONAL_LIBRARIES'] = 'dl'
         else:
             raise Exception("Crypto backend must be specified")
-        defs['CMAKE_INSTALL_PREFIX'] = 'install'
+        cmake.definitions['CMAKE_INSTALL_PREFIX'] = 'install'
 
         cmake.configure()
         cmake.build()

@@ -1,5 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from conans import ConanFile, CMake, tools
-import shutil
 import os
 
 class Libssh2Conan(ConanFile):
@@ -21,20 +23,18 @@ class Libssh2Conan(ConanFile):
         "with_openssl=True"
     url = "https://github.com/bincrafters/conan-libssh2"
     description = "libssh2 is a client-side C library implementing the SSH2 protocol"
+    homepage = "https://libssh2.org"
     license = "https://github.com/libssh2/libssh2/blob/master/COPYING"
     short_paths = True
-    exports = "exports/*"
+    exports_sources = ["CMakeLists.txt", "dl.patch", "LICENSE.md"]
     generators = "cmake", "txt"
+    author = "Bincrafters <bincrafters@gmail.com>"
 
     def source(self):
         tools.get("https://www.libssh2.org/download/libssh2-%s.tar.gz" % (self.version))
-        os.rename("libssh2-%s" % (self.version), self.name)
+        os.rename("libssh2-%s" % (self.version), "sources")
 
-        cmakefile = os.path.join(self.name, "CMakeLists.txt")
-        shutil.move(cmakefile, os.path.join(self.name, "CMakeListsOriginal.cmake"))
-        shutil.move("exports/CMakeLists.txt", cmakefile)
-
-        if self.settings.os == "Linux":
+        if self.settings.os == "Linux": # or self.settings.os == 'Macos':
             # Workaround for dl not found by FindOpenSSL for static openssl
             #
             # Although conan-openssl provides 'dl' in the cpp_info,
@@ -69,11 +69,12 @@ class Libssh2Conan(ConanFile):
         if self.options.with_openssl:
             defs['OPENSSL_ADDITIONAL_LIBRARIES'] = 'dl'
 
-        cmake.configure(source_dir=self.name, build_dir="./", defs=defs)
+        cmake.configure(source_dir="sources", build_dir='.', defs=defs)
         cmake.build()
         cmake.install()
 
     def package(self):
+        self.copy("sources/COPYING", dst="licenses", ignore_case=True, keep_path=False)
         self.copy(pattern="*", dst="include", src="install/include")
         self.copy(pattern="*.dll", dst="bin", src="install/bin", keep_path=False)
         self.copy(pattern="*.lib", dst="lib", src="install/lib", keep_path=False)

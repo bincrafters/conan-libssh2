@@ -70,7 +70,7 @@ class Libssh2Conan(ConanFile):
             raise Exception("Crypto backend must be specified")
         defs['CMAKE_INSTALL_PREFIX'] = 'install'
 
-        cmake.configure(source_dir="sources", build_dir='.', defs=defs)
+        cmake.configure()
         cmake.build()
         cmake.install()
 

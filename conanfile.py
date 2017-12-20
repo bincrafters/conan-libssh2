@@ -26,7 +26,8 @@ class Libssh2Conan(ConanFile):
     homepage = "https://libssh2.org"
     license = "https://github.com/libssh2/libssh2/blob/master/COPYING"
     short_paths = True
-    exports_sources = ["CMakeLists.txt", "dl.patch", "LICENSE.md"]
+    exports = ["LICENSE.md"]
+    exports_sources = ["CMakeLists.txt", "dl.patch"]
     generators = "cmake", "txt"
     author = "Bincrafters <bincrafters@gmail.com>"
 

@@ -42,7 +42,7 @@ class Libssh2Conan(ConanFile):
             # so linking examples and detecting features does not work.
             #
             # Moreover dl must be added to the end of library list
-            self.run("patch -d libssh2 -p0 < exports/dl.patch")
+            tools.patch(patch_file='dl.patch', base_path='sources')
 
     def requirements(self):
         if self.options.with_zlib:
@@ -63,11 +63,11 @@ class Libssh2Conan(ConanFile):
         defs['ENABLE_MAC_NONE'] = self.options.enable_mac_none
         if self.options.with_openssl:
             defs['CRYPTO_BACKEND'] = 'OpenSSL'
+            defs['OPENSSL_ROOT_DIR'] = self.deps_cpp_info['OpenSSL'].rootpath
+            defs['OPENSSL_ADDITIONAL_LIBRARIES'] = 'dl'
         else:
             raise Exception("Crypto backend must be specified")
         defs['CMAKE_INSTALL_PREFIX'] = 'install'
-        if self.options.with_openssl:
-            defs['OPENSSL_ADDITIONAL_LIBRARIES'] = 'dl'
 
         cmake.configure(source_dir="sources", build_dir='.', defs=defs)
         cmake.build()

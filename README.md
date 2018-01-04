@@ -1,54 +1,45 @@
-[ ![Download](https://api.bintray.com/packages/bincrafters/public-conan/libssh2%3Abincrafters/images/download.svg?version=1.8.0%3Astable) ](https://bintray.com/bincrafters/public-conan/libssh2%3Abincrafters/1.8.0%3Astable/link)
-[![Build Status](https://travis-ci.org/bincrafters/conan-libssh2.svg?branch=stable%2F1.8.0)](https://travis-ci.org/bincrafters/conan-libssh2)
-[![Build status](https://ci.appveyor.com/api/projects/status/47mw0498j5ine6vv/branch/stable/1.8.0?svg=true)](https://ci.appveyor.com/project/BinCrafters/conan-libssh2/branch/stable/1.8.0)
+## Package Status
 
-[Conan.io](https://conan.io) package for [libssh2](https://libssh2.org) project
+| Bintray | Appveyor | Travis |
+|---------|-----------|--------|
+|[ ![Download](https://api.bintray.com/packages/bincrafters/public-conan/libssh2%3Abincrafters/images/download.svg) ](https://bintray.com/bincrafters/public-conan/libssh2%3Abincrafters/_latestVersion)|[![Build status](https://ci.appveyor.com/api/projects/status/47mw0498j5ine6vv?svg=true)](https://ci.appveyor.com/project/BinCrafters/conan-libssh2)|[![Build Status](https://travis-ci.org/bincrafters/conan-libssh2.svg?branch=stable%2F1.8.0)](https://travis-ci.org/bincrafters/conan-libssh2)|
 
-The packages generated with this **conanfile** can be found in [Bintray](https://bintray.com/bincrafters/public-conan/libssh2%3Abincrafters).
+## Conan.io Information
 
-## For Users: Use this package
+Bincrafters packages can be found in the following public Conan repository:
 
-### Basic setup
+[Bincrafters Public Conan Repository on Bintray](https://bintray.com/bincrafters/public-conan)
 
-    $ conan install libssh2/1.8.0@bincrafters/stable
-
-### Project setup
-
-If you handle multiple dependencies in your project is better to add a *conanfile.txt*
-
-    [requires]
-    libssh2/1.8.0@bincrafters/stable
-
-    [generators]
-    txt
-
-Complete the installation of requirements for your project running:
-
-    $ mkdir build && cd build && conan install ..
-
-Note: It is recommended that you run conan install from a build directory and not the root of the project directory.  This is because conan generates *conanbuildinfo* files specific to a single build configuration which by default comes from an autodetected default profile located in ~/.conan/profiles/default .  If you pass different build configuration options to conan install, it will generate different *conanbuildinfo* files.  Thus, they should not be added to the root of the project, nor committed to git.
-
-## For Packagers: Publish this Package
-
-The example below shows the commands used to publish to bincrafters conan repository. To publish to your own conan respository (for example, after forking this git repository), you will need to change the commands below accordingly.
+*Note: You can click the "Set Me Up" button on the Bintray page above for instructions on using packages from this repository.*
 
 ## Issues
 
-All issues, such as feature request, bug, support or discussion are centralized on Community repository. If you are interested to open a new issue, please visit https://github.com/bincrafters/community/issues.
+If you wish to report an issue or make a request for a Bincrafters package, please do so here:
 
-## Build and package
+[Bincrafters Community Issues](https://github.com/bincrafters/community/issues)
 
-The following command both runs all the steps of the conan file, and publishes the package to the local system cache.  This includes downloading dependencies from "build_requires" and "requires" , and then running the build() method.
+## General Information
 
-    $ conan create bincrafters/stable
+This GIT repository is managed by the Bincrafters team and holds files related to Conan.io.  For detailed information about Bincrafters and Conan.io, please visit the following resources:
 
-## Add Remote
+[Bincrafters Wiki - Common README](https://github.com/bincrafters/community/wiki/Common-README.md)
 
-	$ conan remote add bincrafters "https://api.bintray.com/conan/bincrafters/public-conan"
+[Bincrafters Technical Documentation](http://bincrafters.readthedocs.io/en/latest/)
 
-## Upload
+[Bincrafters Blog](https://bincrafters.github.io)
 
-    $ conan upload libssh2/1.8.0@bincrafters/stable --all -r bincrafters
+## License Information
 
-### License
-[MIT](https://github.com/someauthor/libssh2/blob/master/LICENSE)
+Bincrafters packages are hosted on [Bintray](https://bintray.com) and contain Open-Source software which is licensed by the software's maintainers and NOT Bincrafters.  For each Open-Source package published by Bincrafters, the packaging process obtains the required license files along with the original source files from the maintainer, and includes these license files in the generated Conan packages.
+
+The contents of this GIT repository are completely separate from the software being packaged and therefor licensed separately.  The license for all files contained in this GIT repository are defined in the [LICENSE.md](LICENSE.md) file in this repository.  The licenses included with all Conan packages published by Bincrafters can be found in the Conan package directories in the following locations, relative to the Conan Cache root (`~/.conan` by default):
+
+### License(s) for packaged software:
+
+    ~/.conan/data/libssh2/1.8.0/bincrafters/stable/package/a4f6c4cfba391492265533621e6784b527c7c34b/licenses/COPYING
+
+*Note :   The most common filenames for OSS licenses are `LICENSE` AND `COPYING` without file extensions.*
+	
+### License for Bincrafters recipe:
+
+    ~/.conan/data/libssh2/1.8.0/bincrafters/stable/export/LICENSE.md

@@ -65,6 +65,8 @@ class Libssh2Conan(ConanFile):
             cmake.definitions['OPENSSL_ADDITIONAL_LIBRARIES'] = 'dl'
         else:
             raise Exception("Crypto backend must be specified")
+        cmake.definitions['BUILD_EXAMPLES'] = False
+        cmake.definitions['BUILD_TESTING'] = False
         cmake.definitions['CMAKE_INSTALL_PREFIX'] = 'install'
 
         cmake.configure()

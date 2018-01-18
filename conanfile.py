@@ -48,10 +48,8 @@ class Libssh2Conan(ConanFile):
     def requirements(self):
         if self.options.with_zlib:
             self.requires.add("zlib/[~=1.2]@conan/stable", private=False)
-            self.options["zlib"].shared = self.options.shared
         if self.options.with_openssl:
             self.requires.add("OpenSSL/[>1.0.2a,<1.0.3]@conan/stable", private=False)
-            self.options["OpenSSL"].shared = self.options.shared
 
     def build(self):
         cmake = CMake(self)

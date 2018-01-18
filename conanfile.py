@@ -77,12 +77,14 @@ class Libssh2Conan(ConanFile):
         self.copy("sources/COPYING", dst="licenses", ignore_case=True, keep_path=False)
         self.copy(pattern="*", dst="include", src="install/include")
         self.copy(pattern="*.dll", dst="bin", src="install/bin", keep_path=False)
-        self.copy(pattern="*.lib", dst="lib", src="install/lib", keep_path=False)
-        self.copy(pattern="*.a", dst="lib", src="install/lib", keep_path=False)
-        self.copy(pattern="*.so*", dst="lib", src="install/lib", keep_path=False)
         self.copy(pattern="*.dylib", dst="lib", src="install/lib", keep_path=False)
-        self.copy("*.*", dst="lib/cmake/libssh2", src="install/lib/cmake/libssh2")
-        self.copy("*.*", dst="lib/pkgconfig", src="install/lib/pkgconfig")
+        # rhel installs libraries into lib64
+        for libarch in ['lib', 'lib64']:
+            self.copy(pattern="*.lib", dst="lib", src="install/%s" % libarch, keep_path=False)
+            self.copy(pattern="*.a", dst="lib", src="install/%s" % libarch, keep_path=False)
+            self.copy(pattern="*.so*", dst="lib", src="install/%s" % libarch, keep_path=False)
+            self.copy("*.*", dst="lib/cmake/libssh2", src="install/%s/cmake/libssh2" % libarch)
+            self.copy("*.*", dst="lib/pkgconfig", src="install/%s/pkgconfig" % libarch)
 
     def package_info(self):
         self.cpp_info.libs = tools.collect_libs(self)

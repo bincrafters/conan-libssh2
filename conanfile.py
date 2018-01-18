@@ -35,7 +35,7 @@ class Libssh2Conan(ConanFile):
         tools.get("https://www.libssh2.org/download/libssh2-%s.tar.gz" % (self.version))
         os.rename("libssh2-%s" % (self.version), "sources")
 
-        if self.settings.os == "Linux": # or self.settings.os == 'Macos':
+        if self.settings.compiler != "Visual Studio":
             # Workaround for dl not found by FindOpenSSL for static openssl
             #
             # Although conan-openssl provides 'dl' in the cpp_info,

@@ -36,10 +36,12 @@ The contents of this GIT repository are completely separate from the software be
 
 ### License(s) for packaged software:
 
-    ~/.conan/data/libssh2/1.8.0/bincrafters/stable/package/a4f6c4cfba391492265533621e6784b527c7c34b/licenses/COPYING
+    ~/.conan/data/<pkg_name>/<pkg_version>/bincrafters/package/<random_package_id>/license/<LICENSE_FILES_HERE>
 
 *Note :   The most common filenames for OSS licenses are `LICENSE` AND `COPYING` without file extensions.*
 	
 ### License for Bincrafters recipe:
 
-    ~/.conan/data/libssh2/1.8.0/bincrafters/stable/export/LICENSE.md
+    ~/.conan/data/<pkg_name>/<pkg_version>/bincrafters/export/LICENSE.md
+
+	

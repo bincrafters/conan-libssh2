@@ -16,6 +16,7 @@ class Libssh2Conan(ConanFile):
     generators = "cmake"
     short_paths = True    
     source_subfolder = "source_subfolder"
+    install_subfolder = 'install'
     settings = "os", "arch", "compiler", "build_type"
     options = {
         "shared": [True, False],
@@ -71,24 +72,20 @@ class Libssh2Conan(ConanFile):
             raise Exception("Crypto backend must be specified")
         cmake.definitions['BUILD_EXAMPLES'] = False
         cmake.definitions['BUILD_TESTING'] = False
-        cmake.definitions['CMAKE_INSTALL_PREFIX'] = 'install'
+        cmake.definitions['CMAKE_INSTALL_PREFIX'] = self.install_subfolder
 
         cmake.configure()
         cmake.build()
         cmake.install()
 
     def package(self):
-        install_dir = "install"
-        subdirs = ["include", "bin","lib",]
-        include_dir, bin_dir, lib_dir = (os.path.join(install_dir, dir) for dir in subdirs)
-        
         self.copy("COPYING", dst="license", src=self.source_subfolder, keep_path=False)
-        self.copy("*", dst="include", src=include_dir)
-        self.copy("*.dll", dst="bin", src=bin_dir, keep_path=False)
-        self.copy("*.dylib", dst="lib", src=lib_dir, keep_path=False)
+        self.copy("*", dst="include", src=os.path.join(self.install_subfolder, "include"))
+        self.copy("*.dll", dst="bin", src=os.path.join(self.install_subfolder, "bin"), keep_path=False)
+        self.copy("*.dylib", dst="lib", src=os.path.join(self.install_subfolder, "lib"), keep_path=False)
         # rhel installs libraries into lib64
         for libarch in ['lib', 'lib64']:
-            arch_dir = os.path.join("install", libarch)
+            arch_dir = os.path.join(self.install_subfolder, libarch)
             cmake_dir_src = os.path.join(arch_dir, "cmake", "libssh2")
             cmake_dir_dst = os.path.join("lib","cmake", "libssh2")
             pkgconfig_dir_src = os.path.join(arch_dir, "pkgconfig")

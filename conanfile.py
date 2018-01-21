@@ -79,7 +79,7 @@ class Libssh2Conan(ConanFile):
         cmake.install()
 
     def package(self):
-        self.copy("COPYING", dst="license", src=self.source_subfolder, keep_path=False)
+        self.copy("COPYING", dst="licenses", src=self.source_subfolder, keep_path=False)
         self.copy("*", dst="include", src=os.path.join(self.install_subfolder, "include"))
         self.copy("*.dll", dst="bin", src=os.path.join(self.install_subfolder, "bin"), keep_path=False)
         self.copy("*.dylib", dst="lib", src=os.path.join(self.install_subfolder, "lib"), keep_path=False)

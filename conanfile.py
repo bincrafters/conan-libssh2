@@ -84,6 +84,7 @@ class Libssh2Conan(ConanFile):
         self.copy("*.dll", dst="bin", src=os.path.join(self.install_subfolder, "bin"), keep_path=False)
         self.copy("*.dylib", dst="lib", src=os.path.join(self.install_subfolder, "lib"), keep_path=False)
         # rhel installs libraries into lib64
+        # cannot use cmake install into package_folder because of lib64 issue
         for libarch in ['lib', 'lib64']:
             arch_dir = os.path.join(self.install_subfolder, libarch)
             cmake_dir_src = os.path.join(arch_dir, "cmake", "libssh2")

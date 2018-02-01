@@ -1,8 +1,8 @@
 ## Package Status
 
-| Bintray | Appveyor | Travis |
-|---------|-----------|--------|
-|[ ![Download](https://api.bintray.com/packages/bincrafters/public-conan/libssh2%3Abincrafters/images/download.svg) ](https://bintray.com/bincrafters/public-conan/libssh2%3Abincrafters/_latestVersion)|[![Build status](https://ci.appveyor.com/api/projects/status/github/bincrafters/conan-libssh2?svg=true)](https://ci.appveyor.com/project/BinCrafters/conan-libssh2)|[![Build Status](https://travis-ci.org/bincrafters/conan-libssh2.svg)](https://travis-ci.org/bincrafters/conan-libssh2)|
+| Bintray | Windows | Linux | Macos |
+|---------|------------|--------|------|
+|[ ![Download](https://api.bintray.com/packages/bincrafters/public-conan/libssh2%3Abincrafters/images/download.svg) ](https://bintray.com/bincrafters/public-conan/libssh2%3Abincrafters/_latestVersion)|[![Build status](https://ci.appveyor.com/api/projects/status/github/bincrafters/conan-libssh2?svg=true)](https://ci.appveyor.com/project/BinCrafters/conan-libssh2)|[![Build Status](https://travis-ci.org/bincrafters/conan-libssh2.svg)](https://travis-ci.org/bincrafters/conan-libssh2)|[![CircleCI](https://circleci.com/gh/bincrafters/conan-libssh2.svg?style=svg)](https://circleci.com/gh/bincrafters/conan-libssh2) |
 
 ## Conan.io Information
 

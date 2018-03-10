@@ -14,9 +14,9 @@ class Libssh2Conan(ConanFile):
     exports = ["LICENSE.md"]
     exports_sources = ["CMakeLists.txt", "dl.patch"]
     generators = "cmake"
-    short_paths = True    
     source_subfolder = "source_subfolder"
-    install_subfolder = 'install'
+    install_subfolder = "install_subfolder"
+
     settings = "os", "arch", "compiler", "build_type"
     options = {
         "shared": [True, False],

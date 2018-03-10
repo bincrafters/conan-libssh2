@@ -52,9 +52,9 @@ class Libssh2Conan(ConanFile):
 
     def requirements(self):
         if self.options.with_zlib:
-            self.requires.add("zlib/[~=1.2]@conan/stable")
+            self.requires.add("zlib/1.2.11@conan/stable")
         if self.options.with_openssl:
-            self.requires.add("OpenSSL/[>1.0.2a,<1.0.3]@conan/stable")
+            self.requires.add("OpenSSL/1.0.2n@conan/stable")
 
     def build(self):
         cmake = CMake(self)

@@ -50,7 +50,7 @@ class Libssh2Conan(ConanFile):
             # Moreover dl must be added to the end of library list
             tools.patch(patch_file='dl.patch', base_path=self.source_subfolder)
 
-    def config_options(self):
+    def configure(self):
         del self.settings.compiler.libcxx
 
     def requirements(self):

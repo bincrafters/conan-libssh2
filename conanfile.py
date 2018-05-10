@@ -20,7 +20,7 @@ class Libssh2Conan(ConanFile):
     settings = "os", "arch", "compiler", "build_type"
     options = {
         "shared": [True, False],
-        "with_pic": [True, False],
+        "fPIC": [True, False],
         "with_zlib": [True, False],
         "enable_crypt_none": [True, False],
         "enable_mac_none": [True, False],
@@ -29,7 +29,7 @@ class Libssh2Conan(ConanFile):
 
     default_options = (
         "shared=False",
-        "with_pic=True",
+        "fPIC=True",
         "with_zlib=True",
         "enable_crypt_none=False",
         "enable_mac_none=False",

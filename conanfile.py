@@ -26,13 +26,13 @@ class Libssh2Conan(ConanFile):
         "enable_mac_none": [True, False],
         "with_openssl": [True, False]
     }
-    
+
     default_options = (
-        "shared=False", 
-        "with_pic=True", 
-        "with_zlib=True", 
-        "enable_crypt_none=False", 
-        "enable_mac_none=False", 
+        "shared=False",
+        "with_pic=True",
+        "with_zlib=True",
+        "enable_crypt_none=False",
+        "enable_mac_none=False",
         "with_openssl=True"
     )
 
@@ -94,7 +94,7 @@ class Libssh2Conan(ConanFile):
             cmake_dir_dst = os.path.join("lib","cmake", "libssh2")
             pkgconfig_dir_src = os.path.join(arch_dir, "pkgconfig")
             pkgconfig_dir_dst = os.path.join("lib", "pkgconfig")
-            
+
             self.copy("*.lib", dst="lib", src=arch_dir, keep_path=False)
             self.copy("*.a", dst="lib", src=arch_dir, keep_path=False)
             self.copy("*.so*", dst="lib", src=arch_dir, keep_path=False)
@@ -104,7 +104,7 @@ class Libssh2Conan(ConanFile):
     def package_info(self):
         self.cpp_info.libs = tools.collect_libs(self)
 
-        if self.settings.compiler == "Visual Studio": 
+        if self.settings.compiler == "Visual Studio":
             if not self.options.shared:
                 self.cpp_info.libs.append('ws2_32')
         elif self.settings.os == "Linux":

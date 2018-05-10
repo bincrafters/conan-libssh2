@@ -18,6 +18,11 @@ If you wish to report an issue or make a request for a Bincrafters package, plea
 
 [Bincrafters Community Issues](https://github.com/bincrafters/community/issues)
 
+## Major changes
+
+Option `with_pic` is replaced with more standard `fPIC` (both enabled by default). If you specified `with_pic=False`,
+please replace it with `fPIC=False`
+
 ## General Information
 
 This GIT repository is managed by the Bincrafters team and holds files related to Conan.io.  For detailed information about Bincrafters and Conan.io, please visit the following resources:

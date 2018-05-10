@@ -63,7 +63,6 @@ class Libssh2Conan(ConanFile):
         cmake = CMake(self)
 
         cmake.definitions['BUILD_SHARED_LIBS'] = self.options.shared
-        cmake.definitions['CMAKE_POSITION_INDEPENDENT_CODE'] = self.options.with_pic
         cmake.definitions['ENABLE_ZLIB_COMPRESSION'] = self.options.with_zlib
         cmake.definitions['ENABLE_CRYPT_NONE'] = self.options.enable_crypt_none
         cmake.definitions['ENABLE_MAC_NONE'] = self.options.enable_mac_none

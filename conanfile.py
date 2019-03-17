@@ -27,14 +27,14 @@ class Libssh2Conan(ConanFile):
         "with_openssl": [True, False]
     }
 
-    default_options = (
-        "shared=False",
-        "fPIC=True",
-        "with_zlib=True",
-        "enable_crypt_none=False",
-        "enable_mac_none=False",
-        "with_openssl=True"
-    )
+    default_options = {
+        "shared": False,
+        "fPIC": True,
+        "with_zlib": True,
+        "enable_crypt_none": False,
+        "enable_mac_none": False,
+        "with_openssl": True
+    }
 
     def source(self):
         tools.get("https://www.libssh2.org/download/libssh2-%s.tar.gz" % (self.version))
@@ -90,7 +90,7 @@ class Libssh2Conan(ConanFile):
         for libarch in ['lib', 'lib64']:
             arch_dir = os.path.join(self.install_subfolder, libarch)
             cmake_dir_src = os.path.join(arch_dir, "cmake", "libssh2")
-            cmake_dir_dst = os.path.join("lib","cmake", "libssh2")
+            cmake_dir_dst = os.path.join("lib", "cmake", "libssh2")
             pkgconfig_dir_src = os.path.join(arch_dir, "pkgconfig")
             pkgconfig_dir_dst = os.path.join("lib", "pkgconfig")
 

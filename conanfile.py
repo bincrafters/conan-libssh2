@@ -6,7 +6,7 @@ import os
 
 class Libssh2Conan(ConanFile):
     name = "libssh2"
-    version = "1.8.0"
+    version = "1.8.2"
     description = "libssh2 is a client-side C library implementing the SSH2 protocol"
     url = "https://github.com/bincrafters/conan-libssh2"
     homepage = "https://libssh2.org"

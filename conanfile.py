@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from conans import ConanFile, CMake, tools
+from conans.errors import ConanInvalidConfiguration
 import os
 
 class Libssh2Conan(ConanFile):
@@ -14,8 +15,8 @@ class Libssh2Conan(ConanFile):
     exports = ["LICENSE.md"]
     exports_sources = ["CMakeLists.txt", "dl.patch"]
     generators = "cmake"
-    source_subfolder = "source_subfolder"
-    install_subfolder = "install_subfolder"
+    _source_subfolder = "source_subfolder"
+    _install_subfolder = "install_subfolder"
 
     settings = "os", "arch", "compiler", "build_type"
     options = {
@@ -38,7 +39,7 @@ class Libssh2Conan(ConanFile):
 
     def source(self):
         tools.get("https://www.libssh2.org/download/libssh2-%s.tar.gz" % (self.version))
-        os.rename("libssh2-%s" % (self.version), self.source_subfolder)
+        os.rename("libssh2-%s" % (self.version), self._source_subfolder)
 
         if self.settings.compiler != "Visual Studio":
             # Workaround for dl not found by FindOpenSSL for static openssl
@@ -48,7 +49,7 @@ class Libssh2Conan(ConanFile):
             # so linking examples and detecting features does not work.
             #
             # Moreover dl must be added to the end of library list
-            tools.patch(patch_file='dl.patch', base_path=self.source_subfolder)
+            tools.patch(patch_file='dl.patch', base_path=self._source_subfolder)
 
     def configure(self):
         del self.settings.compiler.libcxx
@@ -71,24 +72,24 @@ class Libssh2Conan(ConanFile):
             cmake.definitions['OPENSSL_ROOT_DIR'] = self.deps_cpp_info['OpenSSL'].rootpath
             cmake.definitions['OPENSSL_ADDITIONAL_LIBRARIES'] = 'dl'
         else:
-            raise Exception("Crypto backend must be specified")
+            raise ConanInvalidConfiguration("Crypto backend must be specified")
         cmake.definitions['BUILD_EXAMPLES'] = False
         cmake.definitions['BUILD_TESTING'] = False
-        cmake.definitions['CMAKE_INSTALL_PREFIX'] = self.install_subfolder
+        cmake.definitions['CMAKE_INSTALL_PREFIX'] = self._install_subfolder
 
         cmake.configure()
         cmake.build()
         cmake.install()
 
     def package(self):
-        self.copy("COPYING", dst="licenses", src=self.source_subfolder, keep_path=False)
-        self.copy("*", dst="include", src=os.path.join(self.install_subfolder, "include"))
-        self.copy("*.dll", dst="bin", src=os.path.join(self.install_subfolder, "bin"), keep_path=False)
-        self.copy("*.dylib", dst="lib", src=os.path.join(self.install_subfolder, "lib"), keep_path=False)
+        self.copy("COPYING", dst="licenses", src=self._source_subfolder, keep_path=False)
+        self.copy("*", dst="include", src=os.path.join(self._install_subfolder, "include"))
+        self.copy("*.dll", dst="bin", src=os.path.join(self._install_subfolder, "bin"), keep_path=False)
+        self.copy("*.dylib", dst="lib", src=os.path.join(self._install_subfolder, "lib"), keep_path=False)
         # rhel installs libraries into lib64
         # cannot use cmake install into package_folder because of lib64 issue
         for libarch in ['lib', 'lib64']:
-            arch_dir = os.path.join(self.install_subfolder, libarch)
+            arch_dir = os.path.join(self._install_subfolder, libarch)
             cmake_dir_src = os.path.join(arch_dir, "cmake", "libssh2")
             cmake_dir_dst = os.path.join("lib", "cmake", "libssh2")
             pkgconfig_dir_src = os.path.join(arch_dir, "pkgconfig")
